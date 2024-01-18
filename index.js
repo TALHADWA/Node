@@ -20,8 +20,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false , limit:"10mb"}));
+app.use(bodyParser.json({
+  limit:"10mb"
+}));
 
 monogo.connect("mongodb+srv://talhaali21cv:jrT8pRzeFAhvGF4o@cluster0.jsmg5yb.mongodb.net/?retryWrites=true&w=majority").then(function () {
   console.log("kjjedehk");
@@ -60,48 +62,102 @@ app.post("/login",async function(req,res){
   }
   else
 {
-  res.json(check);
+  res.json(asdd);
 }
    }
 
 });
 
-app.get("/All", async function (req, res) {
-        const data = await signup.find();
-        res.json({'data':data});
+app.post("/savenote" , async function(req,res){
+  
+  try {
+    const { whocontains, title, images, subtitle } = req.body;
+  
+    // Ensure 'images' is a non-empty string
+   
+    // Convert the Base64-encoded image string to a Buffer
+    const imageBuffer = Buffer.from(images, 'base64');
+  
+    const data = new models({
+      whocontains: whocontains,
+      title: title,
+      images: imageBuffer, // Assuming images is an array of Buffers
+      subtitle: subtitle,
     });
-    app.post("/delete/:name", async function (req, res) {
-        const data = await models.deleteOne({name:req.params.name});
-        res.json(data);
-    });
-    app.get("/search/:name", async function (req, res) {
-        const data = await models.find({ name: req.params.name});
-        res.json(data);
-    });
+  
+    // Save the data to the database
+    const result = await data.save();
+  
+    // Respond with the saved data
+    res.json(result);
+  } catch (error) {
+    // Handle errors appropriately
+    console.error(error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }  
+});
 
-    app.post("/add", async function (req, res) {
-     
-      const data= new models(req.body);
-       
-// if(note.age < 18){
-//  return res.status(300).json({
-//     "message":"sendage less then 18"
-//  });
-// }
- 
-// else{
+app.get("/loginuserdata/:whocontains" , async function(req,res){
+  
   try{
-    const sx = await data.save();
-    res.json(sx);
+
+   const data= await models.find({  whocontains:req.params.whocontains });
+   res.json(data);
+
   }
   catch(error){
-    res.send(error);
+   res.json(error)
   }
-    });
+ });
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// app.get("/All", async function (req, res) {
+//         const data = await signup.find();
+//         res.json({'data':data});
+//     });
+//     app.post("/delete/:name", async function (req, res) {
+//         const data = await models.deleteOne({name:req.params.name});
+//         res.json(data);
+//     });
+//     app.get("/search/:name", async function (req, res) {
+//         const data = await models.find({ name: req.params.name});
+//         res.json(data);
+//     });
+
+//     app.post("/add", async function (req, res) {
+     
+//       const data= new models(req.body);
+       
+
+//   try{
+//     const sx = await data.save();
+//     res.json(sx);
+//   }
+//   catch(error){
+//     res.send(error);
+//   }
+//     });
 });
 
 app.listen(8389);
- 
- 
- 
  
