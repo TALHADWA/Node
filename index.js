@@ -7,7 +7,7 @@ const models = require("./models/model");
 const parser = require("body-parser");
 const cors = require('cors');
 const bodyParser = require("body-parser");
-
+const port=process.env.port || 8090;
 const app = xpress();
 
 // Enable CORS at the beginning
@@ -100,7 +100,7 @@ app.get("/All", async function (req, res) {
     });
 });
 
-app.listen(8389);
+app.listen(port);
  
  
  

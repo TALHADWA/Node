@@ -17,23 +17,23 @@ const sch=mongo.Schema({
 
 sch.pre("save", function(next){
     // if()
-// if(this.password != this.confirmpassword ){
-//     next("password and confirm password are not same");
-// }
-// else if(this.password.length <7){
-//     next("TOO short Password");
-// }
-// else if(!this.email.includes('@') ){
-//     next("Not valid email");
-// }
-// else{
+if(this.password != this.confirmpassword ){
+    next("password and confirm password are not same");
+}
+else if(this.password.length <7){
+    next("TOO short Password");
+}
+else if(!this.email.includes('@') ){
+    next("Not valid email");
+}
+else{
     this.id=ids.v1();
     const bcrypts=bcrypt.genSaltSync(10);
     const hash=bcrypt.hashSync(this.password, bcrypts) ;
     this.password=hash;
 
     next();
-// }
+}
 });
 sch.pre(["update"," findOneAndUpdate","updateOne"], function(next){
    try{
