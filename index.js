@@ -26,7 +26,10 @@ app.use(bodyParser.json({
 }));
 
 monogo.connect("mongodb+srv://talhaali21cv:jrT8pRzeFAhvGF4o@cluster0.jsmg5yb.mongodb.net/?retryWrites=true&w=majority").then(function () {
+app.get("/", function(req,res){
 
+    res.send("fuck"):
+}
 
 app.post("/signup",async function(req,res){
   try{
