@@ -26,10 +26,17 @@ app.use(bodyParser.json({
 }));
 
 monogo.connect("mongodb+srv://talhaali21cv:jrT8pRzeFAhvGF4o@cluster0.jsmg5yb.mongodb.net/?retryWrites=true&w=majority").then(function () {
-app.get("/", function(req,res){
+app.get("/d", function(req, res){
+    // Sample JSON data
+    const jsonData = {
+        message: "Hello, world!",
+        status: "success"
+    };
 
-    res.send("fuck"):
-}
+    // Sending JSON response
+    res.json(jsonData);
+});
+
 
 app.post("/signup",async function(req,res){
   try{
